@@ -5,6 +5,12 @@ define([
 ], function(Adapt, ComponentView, ComponentModel) {
 
   class GraphicView extends ComponentView {
+      
+          events () {
+      return {
+        'click .lens-icon': 'onImageClicked'
+      }
+    }
 
     preRender() {
       this.listenTo(Adapt, 'device:changed', this.resizeImage);
@@ -37,6 +43,26 @@ define([
         }
       });
     }
+      onImageClicked (event) {
+              this.openPopup();
+    }
+      
+      
+      
+          openPopup() {
+              const largeimage = this.model.get('_graphic')["large"];
+              var popupObject = {
+    body: "<img src='"+ largeimage +"'>",
+    _classes: "imageviewer" + this.model.get('_classes')
+};
+
+Adapt.notify.popup(popupObject);// if using Adapt FW v4.4.0 or later (the above will still work but will be removed in a future release)
+    }
+
+
+  
+      
+      
   }
 
   GraphicView.template = 'graphic';
